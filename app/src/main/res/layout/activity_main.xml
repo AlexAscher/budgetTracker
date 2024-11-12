@@ -13,6 +13,17 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+        <ImageButton
+            android:id="@+id/settingsBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_settings"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/settings"/>
+
         <LinearLayout
             android:id="@+id/balance_layout"
             android:layout_width="match_parent"
