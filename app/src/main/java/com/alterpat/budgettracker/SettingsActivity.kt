@@ -5,14 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-
-private val Context.dataStore by preferencesDataStore(name = "settings")
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -22,11 +19,11 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_settings) // Переместите setContentView сюда
+        setContentView(R.layout.activity_settings)
         applySettings()
 
         lifecycleScope.launch {
-            val preferences = dataStore.data.first()
+            val preferences = DataStoreSingleton.getDataStore(applicationContext).data.first()
             val theme = preferences[THEME_KEY] ?: "light"
             val color = preferences[COLOR_KEY] ?: "red"
 
@@ -51,7 +48,7 @@ class SettingsActivity : AppCompatActivity() {
                 else -> "light"
             }
             lifecycleScope.launch {
-                dataStore.edit { preferences ->
+                DataStoreSingleton.getDataStore(applicationContext).edit { preferences ->
                     preferences[THEME_KEY] = theme
                 }
             }
@@ -67,7 +64,7 @@ class SettingsActivity : AppCompatActivity() {
                 else -> "red"
             }
             lifecycleScope.launch {
-                dataStore.edit { preferences ->
+                DataStoreSingleton.getDataStore(applicationContext).edit { preferences ->
                     preferences[COLOR_KEY] = color
                 }
             }
@@ -76,7 +73,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun applySettings() {
         runBlocking {
-            val preferences = dataStore.data.first()
+            val preferences = DataStoreSingleton.getDataStore(applicationContext).data.first()
             val theme = preferences[THEME_KEY] ?: "light"
             val color = preferences[COLOR_KEY] ?: "red"
 

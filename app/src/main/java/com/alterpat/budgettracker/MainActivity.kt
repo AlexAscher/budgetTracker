@@ -17,11 +17,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import android.widget.ImageButton
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-
-private val Context.dataStore by preferencesDataStore(name = "settings")
 
 class MainActivity : AppCompatActivity() {
     private lateinit var deletedTransaction: Transaction
@@ -89,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun applySettings() {
         runBlocking {
-            val preferences = dataStore.data.first()
+            val preferences = DataStoreSingleton.getDataStore(applicationContext).data.first()
             val theme = preferences[THEME_KEY] ?: "light"
 
             when (theme) {
@@ -119,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         expense.text = "$ %.2f".format(expenseAmount)
 
         runBlocking {
-            val preferences = dataStore.data.first()
+            val preferences = DataStoreSingleton.getDataStore(applicationContext).data.first()
             val color = preferences[COLOR_KEY] ?: "red"
 
             val colorResId = when (color) {
