@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity() {
             layoutManager = linearLayoutManager
         }
 
-
         // swipe to remove
         val itemTouchHelper = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
             override fun onMove(
