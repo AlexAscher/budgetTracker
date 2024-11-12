@@ -34,9 +34,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        applySettings()
-
         setContentView(R.layout.activity_main)
+        applySettings()
 
         transactions = arrayListOf()
 
@@ -84,14 +83,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        applySettings()
+        fetchAll()
+    }
+
     private fun applySettings() {
         runBlocking {
             val preferences = DataStoreSingleton.getDataStore(applicationContext).data.first()
             val theme = preferences[THEME_KEY] ?: "light"
 
             when (theme) {
-                "light" -> setTheme(R.style.Theme_Light)
-                "dark" -> setTheme(R.style.Theme_Dark)
+                "light" -> {
+                    setTheme(R.style.Theme_Light)
+                    findViewById<View>(R.id.coordinator).setBackgroundColor(ContextCompat.getColor(this@MainActivity, R.color.white))
+                    findViewById<View>(R.id.main_layout).setBackgroundColor(ContextCompat.getColor(this@MainActivity, R.color.white))
+                }
+                "dark" -> {
+                    setTheme(R.style.Theme_Dark)
+                    findViewById<View>(R.id.coordinator).setBackgroundColor(ContextCompat.getColor(this@MainActivity, R.color.gray))
+                    findViewById<View>(R.id.main_layout).setBackgroundColor(ContextCompat.getColor(this@MainActivity, R.color.gray))
+                }
             }
         }
     }
@@ -170,10 +183,5 @@ class MainActivity : AppCompatActivity() {
                 showSnackbar()
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        fetchAll()
     }
 }

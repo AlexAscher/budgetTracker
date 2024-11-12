@@ -92,13 +92,26 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/editBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:padding="10dp"
+        android:text="Редактировать"
+        android:layout_margin="10dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/updateBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
         android:id="@+id/updateBtn"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/green"
         android:padding="10dp"
-        android:text="Update transaction"
+        android:text="Сохранить"
         android:layout_margin="10dp"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"

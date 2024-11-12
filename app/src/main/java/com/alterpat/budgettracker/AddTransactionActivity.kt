@@ -7,10 +7,17 @@ import androidx.room.Room
 import kotlinx.android.synthetic.main.activity_add_transaction.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import androidx.datastore.preferences.core.stringPreferencesKey
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 class AddTransactionActivity : AppCompatActivity() {
+    private val THEME_KEY = stringPreferencesKey("theme")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        applySettings()
         setContentView(R.layout.activity_add_transaction)
 
         labelInput.addTextChangedListener {
@@ -55,4 +62,15 @@ class AddTransactionActivity : AppCompatActivity() {
         }
     }
 
+    private fun applySettings() {
+        runBlocking {
+            val preferences = DataStoreSingleton.getDataStore(applicationContext).data.first()
+            val theme = preferences[THEME_KEY] ?: "light"
+
+            when (theme) {
+                "light" -> setTheme(R.style.Theme_Light)
+                "dark" -> setTheme(R.style.Theme_Dark)
+            }
+        }
+    }
 }
