@@ -25,7 +25,6 @@ class DetailedActivity : AppCompatActivity() {
     private lateinit var amountInput: TextInputEditText
     private lateinit var descriptionInput: TextInputEditText
     private lateinit var updateBtn: Button
-    private lateinit var editBtn: Button
     private lateinit var labelLayout: TextInputLayout
     private lateinit var amountLayout: TextInputLayout
     private lateinit var rootView: View
@@ -41,7 +40,6 @@ class DetailedActivity : AppCompatActivity() {
         amountInput = findViewById(R.id.amountInput)
         descriptionInput = findViewById(R.id.descriptionInput)
         updateBtn = findViewById(R.id.updateBtn)
-        editBtn = findViewById(R.id.editBtn)
         labelLayout = findViewById(R.id.labelLayout)
         amountLayout = findViewById(R.id.amountLayout)
         rootView = findViewById(R.id.rootView)
@@ -52,10 +50,6 @@ class DetailedActivity : AppCompatActivity() {
         labelInput.setText(transaction.label)
         amountInput.setText(transaction.amount.toString())
         descriptionInput.setText(transaction.description)
-
-        editBtn.setOnClickListener {
-            enableEditing(true)
-        }
 
         updateBtn.setOnClickListener {
             saveTransaction()
@@ -87,14 +81,6 @@ class DetailedActivity : AppCompatActivity() {
         closeBtn.setOnClickListener {
             finish()
         }
-    }
-
-    private fun enableEditing(enable: Boolean) {
-        labelInput.isEnabled = enable
-        amountInput.isEnabled = enable
-        descriptionInput.isEnabled = enable
-        updateBtn.visibility = if (enable) View.VISIBLE else View.GONE
-        editBtn.visibility = if (enable) View.GONE else View.VISIBLE
     }
 
     private fun saveTransaction() {
