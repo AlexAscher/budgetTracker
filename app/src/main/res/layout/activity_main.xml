@@ -66,6 +66,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp">
                 <LinearLayout
+                    android:id="@+id/budget_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -87,6 +88,7 @@
                         android:textAllCaps="true"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/expense_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"

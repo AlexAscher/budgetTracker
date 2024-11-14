@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -78,6 +79,18 @@ class MainActivity : AppCompatActivity() {
         val settingsBtn: ImageButton = findViewById(R.id.settingsBtn)
         settingsBtn.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
+        findViewById<LinearLayout>(R.id.budget_layout).setOnClickListener {
+            val intent = Intent(this, TransactionListActivity::class.java)
+            intent.putExtra("type", "budget")
+            startActivity(intent)
+        }
+
+        findViewById<LinearLayout>(R.id.expense_layout).setOnClickListener {
+            val intent = Intent(this, TransactionListActivity::class.java)
+            intent.putExtra("type", "expense")
             startActivity(intent)
         }
     }

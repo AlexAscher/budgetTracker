@@ -18,8 +18,9 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.flow.first
 
 class DetailedActivity : AppCompatActivity() {
-    private lateinit var transaction : Transaction
+    private lateinit var transaction: Transaction
     private val THEME_KEY = stringPreferencesKey("theme")
+    private lateinit var db: AppDatabase
 
     private lateinit var labelInput: TextInputEditText
     private lateinit var amountInput: TextInputEditText
@@ -36,6 +37,8 @@ class DetailedActivity : AppCompatActivity() {
         applySettings()
         setContentView(R.layout.activity_detailed)
 
+        db = Room.databaseBuilder(this, AppDatabase::class.java, "transactions").build()
+
         labelInput = findViewById(R.id.labelInput)
         amountInput = findViewById(R.id.amountInput)
         descriptionInput = findViewById(R.id.descriptionInput)
@@ -45,7 +48,10 @@ class DetailedActivity : AppCompatActivity() {
         rootView = findViewById(R.id.rootView)
         closeBtn = findViewById(R.id.closeBtn)
 
-        transaction = intent.getSerializableExtra("transaction") as Transaction
+        transaction = intent.getParcelableExtra("transaction") ?: run {
+            finish()
+            return
+        }
 
         labelInput.setText(transaction.label)
         amountInput.setText(transaction.amount.toString())
@@ -93,19 +99,16 @@ class DetailedActivity : AppCompatActivity() {
         else if(amount == null)
             amountLayout.error = "Please enter a valid amount"
         else {
-            val updatedTransaction = Transaction(transaction.id, label, amount, description)
-            update(updatedTransaction)
-        }
-    }
+            transaction.label = label
+            transaction.amount = amount
+            transaction.description = description
 
-    private fun update(transaction: Transaction){
-        val db = Room.databaseBuilder(this,
-            AppDatabase::class.java,
-            "transactions").build()
-
-        GlobalScope.launch {
-            db.transactionDao().update(transaction)
-            finish()
+            GlobalScope.launch {
+                db.transactionDao().update(transaction)
+                runOnUiThread {
+                    finish()
+                }
+            }
         }
     }
 

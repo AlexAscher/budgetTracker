@@ -12,6 +12,7 @@
         <activity android:name=".DetailedActivity"></activity>
         <activity android:name=".AddTransactionActivity" />
         <activity android:name=".SettingsActivity" />
+        <activity android:name=".TransactionListActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

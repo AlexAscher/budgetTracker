@@ -7,6 +7,12 @@ interface TransactionDao {
     @Query("SELECT * from transactions")
     fun getAll(): List<Transaction>
 
+    @Query("SELECT * from transactions WHERE amount > 0")
+    fun getPositiveTransactions(): List<Transaction>
+
+    @Query("SELECT * from transactions WHERE amount < 0")
+    fun getNegativeTransactions(): List<Transaction>
+
     @Insert
     fun insertAll(vararg transaction: Transaction)
 
