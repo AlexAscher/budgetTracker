@@ -13,13 +13,15 @@ data class Transaction(
     @PrimaryKey(autoGenerate = true) val id: Int,
     var label: String,
     var amount: Double,
-    var description: String
+    var description: String,
+    var date: Long // Добавьте это поле
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString() ?: "",
         parcel.readDouble(),
-        parcel.readString() ?: ""
+        parcel.readString() ?: "",
+        parcel.readLong()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -27,6 +29,7 @@ data class Transaction(
         parcel.writeString(label)
         parcel.writeDouble(amount)
         parcel.writeString(description)
+        parcel.writeLong(date)
     }
 
     override fun describeContents(): Int {

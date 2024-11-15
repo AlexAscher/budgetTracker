@@ -17,6 +17,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.flow.first
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class DetailedActivity : AppCompatActivity() {
     private lateinit var transaction: Transaction
@@ -26,9 +29,11 @@ class DetailedActivity : AppCompatActivity() {
     private lateinit var labelInput: TextInputEditText
     private lateinit var amountInput: TextInputEditText
     private lateinit var descriptionInput: TextInputEditText
+    private lateinit var dateInput: TextInputEditText
     private lateinit var updateBtn: Button
     private lateinit var labelLayout: TextInputLayout
     private lateinit var amountLayout: TextInputLayout
+    private lateinit var dateLayout: TextInputLayout
     private lateinit var rootView: View
     private lateinit var closeBtn: ImageButton
 
@@ -43,9 +48,11 @@ class DetailedActivity : AppCompatActivity() {
         labelInput = findViewById(R.id.labelInput)
         amountInput = findViewById(R.id.amountInput)
         descriptionInput = findViewById(R.id.descriptionInput)
+        dateInput = findViewById(R.id.dateInput)
         updateBtn = findViewById(R.id.updateBtn)
         labelLayout = findViewById(R.id.labelLayout)
         amountLayout = findViewById(R.id.amountLayout)
+        dateLayout = findViewById(R.id.dateLayout)
         rootView = findViewById(R.id.rootView)
         closeBtn = findViewById(R.id.closeBtn)
 
@@ -57,9 +64,12 @@ class DetailedActivity : AppCompatActivity() {
             return
         }
 
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+
         labelInput.setText(transaction.label)
         amountInput.setText(transaction.amount.toString())
         descriptionInput.setText(transaction.description)
+        dateInput.setText(dateFormat.format(Date(transaction.date)))
 
         updateBtn.setOnClickListener {
             saveTransaction()
@@ -97,15 +107,24 @@ class DetailedActivity : AppCompatActivity() {
         val label = labelInput.text.toString()
         val description = descriptionInput.text.toString()
         val amount = amountInput.text.toString().toDoubleOrNull()
+        val dateString = dateInput.text.toString()
+        val date = try {
+            SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).parse(dateString)?.time ?: System.currentTimeMillis()
+        } catch (e: Exception) {
+            null
+        }
 
         if(label.isEmpty())
             labelLayout.error = "Please enter a valid label"
         else if(amount == null)
             amountLayout.error = "Please enter a valid amount"
+        else if(date == null)
+            dateLayout.error = "Please enter a valid date"
         else {
             transaction.label = label
             transaction.amount = amount
             transaction.description = description
+            transaction.date = date
 
             GlobalScope.launch {
                 db.transactionDao().update(transaction)

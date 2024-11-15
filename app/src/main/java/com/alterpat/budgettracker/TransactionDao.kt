@@ -13,6 +13,9 @@ interface TransactionDao {
     @Query("SELECT * from transactions WHERE amount < 0")
     fun getNegativeTransactions(): List<Transaction>
 
+    @Query("SELECT * from transactions WHERE date >= :startDate")
+    fun getTransactionsFromDate(startDate: Long): List<Transaction>
+
     @Insert
     fun insertAll(vararg transaction: Transaction)
 

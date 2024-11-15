@@ -112,6 +112,16 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <Spinner
+            android:id="@+id/spinner_time_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dashboard"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:entries="@array/time_periods"/>
+
         <TextView
             android:id="@+id/recyclerview_title"
             android:layout_width="wrap_content"
@@ -120,7 +130,7 @@
             android:textStyle="bold"
             android:textSize="17sp"
             android:textAllCaps="true"
-            android:layout_below="@id/dashboard"
+            android:layout_below="@id/spinner_time_period"
             android:layout_marginTop="12dp"
             android:layout_marginStart="10dp" />
 

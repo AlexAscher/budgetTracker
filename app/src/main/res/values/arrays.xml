@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="time_periods">
+        <item>Последний день</item>
+        <item>Последний месяц</item>
+        <item>Последние 2 месяца</item>
+        <item>Всё время</item>
+    </string-array>
+</resources>

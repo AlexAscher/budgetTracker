@@ -20,6 +20,10 @@ import android.widget.LinearLayout
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var deletedTransaction: Transaction
@@ -45,7 +49,9 @@ class MainActivity : AppCompatActivity() {
 
         db = Room.databaseBuilder(this,
             AppDatabase::class.java,
-            "transactions").build()
+            "transactions")
+            .fallbackToDestructiveMigration() // Добавьте это
+            .build()
 
         recyclerview.apply {
             adapter = transactionAdapter
@@ -92,6 +98,24 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, TransactionListActivity::class.java)
             intent.putExtra("type", "expense")
             startActivity(intent)
+        }
+
+        val spinner: Spinner = findViewById(R.id.spinner_time_period)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.time_periods,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                fetchTransactionsByPeriod(position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
@@ -193,6 +217,25 @@ class MainActivity : AppCompatActivity() {
                 updateDashboard()
                 transactionAdapter.setData(transactions)
                 showSnackbar()
+            }
+        }
+    }
+
+    private fun fetchTransactionsByPeriod(position: Int) {
+        val calendar = Calendar.getInstance()
+        when (position) {
+            0 -> calendar.add(Calendar.DAY_OF_YEAR, -1)
+            1 -> calendar.add(Calendar.MONTH, -1)
+            2 -> calendar.add(Calendar.MONTH, -2)
+            3 -> calendar.timeInMillis = 0
+        }
+        val startDate = calendar.timeInMillis
+
+        GlobalScope.launch {
+            transactions = db.transactionDao().getTransactionsFromDate(startDate)
+            runOnUiThread {
+                updateDashboard()
+                transactionAdapter.setData(transactions)
             }
         }
     }
