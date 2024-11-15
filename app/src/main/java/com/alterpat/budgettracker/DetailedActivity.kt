@@ -98,6 +98,12 @@ class DetailedActivity : AppCompatActivity() {
             updateBtn.visibility = View.VISIBLE
         }
 
+        dateInput.addTextChangedListener {
+            updateBtn.visibility = View.VISIBLE
+            if(it!!.count() > 0)
+                dateLayout.error = null
+        }
+
         closeBtn.setOnClickListener {
             finish()
         }
