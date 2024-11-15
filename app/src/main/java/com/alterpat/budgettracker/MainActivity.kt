@@ -122,7 +122,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         applySettings()
-        fetchAll()
+        val spinner: Spinner = findViewById(R.id.spinner_time_period)
+        fetchTransactionsByPeriod(spinner.selectedItemPosition)
     }
 
     private fun applySettings() {

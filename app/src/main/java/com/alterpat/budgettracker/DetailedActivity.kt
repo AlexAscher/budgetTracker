@@ -1,6 +1,7 @@
 package com.alterpat.budgettracker
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -135,6 +136,9 @@ class DetailedActivity : AppCompatActivity() {
             GlobalScope.launch {
                 db.transactionDao().update(transaction)
                 runOnUiThread {
+                    val intent = Intent(this@DetailedActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
                     finish()
                 }
             }
