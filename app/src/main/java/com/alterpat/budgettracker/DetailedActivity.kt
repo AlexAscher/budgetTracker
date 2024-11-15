@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.TextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import androidx.core.widget.addTextChangedListener
@@ -47,6 +48,9 @@ class DetailedActivity : AppCompatActivity() {
         amountLayout = findViewById(R.id.amountLayout)
         rootView = findViewById(R.id.rootView)
         closeBtn = findViewById(R.id.closeBtn)
+
+        val header = findViewById<TextView>(R.id.header)
+        header.text = "Detailed Activity"
 
         transaction = intent.getParcelableExtra("transaction") ?: run {
             finish()

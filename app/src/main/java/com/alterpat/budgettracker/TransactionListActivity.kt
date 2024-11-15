@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import android.widget.ImageButton
+import android.widget.TextView
 
 class TransactionListActivity : AppCompatActivity() {
     private lateinit var transactions: List<Transaction>
@@ -38,7 +40,20 @@ class TransactionListActivity : AppCompatActivity() {
             layoutManager = linearLayoutManager
         }
 
+        val header = findViewById<TextView>(R.id.header)
+        val closeBtn = findViewById<ImageButton>(R.id.closeBtn)
+
         val type = intent.getStringExtra("type")
+        header.text = when (type) {
+            "budget" -> "Budget Transactions"
+            "expense" -> "Expense Transactions"
+            else -> "Transactions"
+        }
+
+        closeBtn.setOnClickListener {
+            finish()
+        }
+
         fetchTransactions(type)
     }
 
